@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIBRIL ZAOUI // Développeur Logiciel - Renault Ampere</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Wix+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ampere: {
+              eigengrau: '#1E1E1E',
+              silicon: '#FAFAFA',
+              scandium1: '#E0D4CF',
+              scandium2: '#948782',
+              blue: '#79EBFF',
+              pink: '#FF9FFF',
+              purple: '#A478FF'
+            }
+          },
+          fontFamily: {
+            title: ['Wix Display', 'sans-serif'],
+            body: ['Manrope', 'sans-serif']
+          },
+          animation: {
+            ascend: 'ascend 0.8s ease-out forwards',
+            scan: 'scan 3s linear infinite',
+            shimmer: 'shimmer 2s infinite linear',
+            floaty: 'floaty 6s ease-in-out infinite',
+            glow: 'glow 3s ease-in-out infinite',
+            fadeUp: 'fadeUp 0.7s ease-out forwards'
+          },
+          keyframes: {
+            ascend: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            scan: {
+              '0%': { transform: 'translateY(-10%)' },
+              '100%': { transform: 'translateY(300%)' }
+            },
+            shimmer: {
+              '0%': { transform: 'translateX(-100%)' },
+              '100%': { transform: 'translateX(100%)' }
+            },
+            floaty: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
+            },
+            glow: {
+              '0%, 100%': { boxShadow: '0 0 0px rgba(121,235,255,0.0)' },
+              '50%': { boxShadow: '0 0 28px rgba(121,235,255,0.22)' }
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(18px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+      background-color: #1E1E1E;
+      color: #FAFAFA;
+    }
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(121,235,255,0.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(164,120,255,0.08), transparent 24%),
+        linear-gradient(180deg, #1E1E1E 0%, #171717 100%);
+    }
+    .bg-diamond-pattern {
+      background-image:
+        linear-gradient(45deg, rgba(250, 250, 250, 0.018) 25%, transparent 25%, transparent 75%, rgba(250, 250, 250, 0.018) 75%, rgba(250, 250, 250, 0.018));
+      background-size: 52px 52px;
+    }
+    .glass {
+      background: rgba(30, 30, 30, 0.68);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .nav-link.active {
+      color: #79EBFF;
+      border-bottom: 2px solid #79EBFF;
+      text-shadow: 0 0 12px rgba(121,235,255,0.35);
+    }
+    .hidden-tab { display: none; }
+    .project-link:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(121, 235, 255, 0.18);
+    }
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1rem;
+    }
+    .project-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+      border-radius: 1rem;
+    }
+    .soft-hover {
+      transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease, background .35s ease;
+    }
+    .soft-hover:hover {
+      transform: translateY(-3px);
+      border-color: rgba(121,235,255,0.35);
+    }
+    .section-fade {
+      animation: fadeUp .7s ease-out both;
+    }
+    .btn-glow:hover {
+      animation: glow 1.8s ease-in-out infinite;
+    }
+    .timeline-dot {
+      box-shadow: 0 0 0 0 rgba(121,235,255,.45);
+      animation: pulse 2s infinite;
+    }
+    .modal-shell {
+      background: rgba(30,30,30,0.96);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(121,235,255,0.25);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+
+<body class="font-body selection:bg-ampere-blue selection:text-ampere-eigengrau bg-diamond-pattern">
+
+<header class="fixed top-0 w-full glass z-[60] border-b border-ampere-blue/20">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div class="w-3 h-3 bg-ampere-blue rotate-45 shadow-[0_0_10px_#79EBFF] animate-pulse"></div>
+      <span class="font-title text-xl font-extrabold tracking-tighter uppercase" id="nav-brand">G. ZAOUI</span>
+    </div>
+
+    <nav class="hidden lg:flex gap-10 text-xs font-title font-bold tracking-[0.15em] uppercase">
+      <button onclick="showTab('tab-accueil')" class="nav-link active py-2" id="lnk-accueil" data-i18n="navAccueil">Accueil</button>
+      <button onclick="showTab('tab-expertise')" class="nav-link py-2" id="lnk-expertise" data-i18n="navExpertise">Compétences</button>
+      <button onclick="showTab('tab-projets')" class="nav-link py-2" id="lnk-projets" data-i18n="navProjets">Projets</button>
+      <button onclick="showTab('tab-engagement')" class="nav-link py-2" id="lnk-engagement" data-i18n="navEngagement">Engagement</button>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <select id="lang-select" onchange="changeLang(this.value)" class="bg-transparent border border-white/10 text-[10px] font-bold uppercase p-1 rounded-sm text-ampere-scandium2 focus:outline-none">
+        <option value="fr">FR</option>
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+      </select>
+      <button onclick="openCv()" class="px-5 py-2 bg-ampere-blue text-ampere-eigengrau text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all btn-glow" data-i18n="cvBtn">CV</button>
+    </div>
+  </div>
+</header>
+
+<main class="pt-32 pb-24 min-h-screen max-w-7xl mx-auto px-6">
+
+  <section id="tab-accueil" class="tab-content animate-ascend">
+    <div class="grid lg:grid-cols-[1.2fr,0.8fr] gap-16 items-center">
+      <div class="section-fade">
+        <div class="inline-flex items-center gap-3 font-mono text-ampere-blue text-[10px] tracking-[0.3em] uppercase bg-ampere-blue/10 px-4 py-2 border border-ampere-blue/30 mb-8 overflow-hidden relative rounded-full">
+          <div class="absolute inset-0 bg-ampere-blue/20 -translate-x-full animate-shimmer"></div>
+          <i data-lucide="activity" class="w-3 h-3"></i>
+          <span data-i18n="heroStatus">Système en ligne // Alternance 3 ans</span>
+        </div>
+
+        <h1 class="text-6xl lg:text-[7rem] font-title font-extrabold leading-[0.85] tracking-tighter mb-6 animate-floaty">
+          GIBRIL<br>ZAOUI
+        </h1>
+
+        <h2 class="text-2xl lg:text-4xl text-ampere-blue font-bold uppercase tracking-widest mb-10" data-i18n="heroTitle">
+          Ingénierie logicielle // SDV
+        </h2>
+
+        <div class="border-l-4 border-ampere-blue pl-8 max-w-2xl">
+          <p class="text-xl text-ampere-silicon leading-relaxed mb-4" data-i18n="heroHook">
+            Basé à Lille. Étudiant en BUT Informatique et alternant chez Certigna. Passionné par l'innovation logicielle industrielle et le Software-Defined Vehicle.
+          </p>
+          <p class="text-ampere-scandium2 mb-6" data-i18n="heroDesc">
+            Je conçois des applications backend robustes en Java et PHP, j'optimise des requêtes SQL complexes et je développe des interfaces React. Je cherche à appliquer cette rigueur chez Renault Ampere pour contribuer à l'usine connectée et aux véhicules électriques intelligents.
+          </p>
+
+          <div class="flex gap-4 mt-8 flex-wrap">
+            <button onclick="showTab('tab-projets')" class="px-6 py-3 bg-ampere-blue text-ampere-eigengrau text-xs font-bold uppercase tracking-widest hover:bg-white transition-all cursor-pointer btn-glow rounded-md" data-i18n="seeProjectsBtn">Voir mes projets</button>
+            <a href="https://github.com/Gibril05" target="_blank" class="px-6 py-3 border border-ampere-blue text-ampere-blue text-xs font-bold uppercase tracking-widest hover:bg-ampere-blue hover:text-ampere-eigengrau transition-all rounded-md soft-hover" data-i18n="githubBtn">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative group hidden lg:block animate-fadeUp">
+        <div class="absolute inset-0 bg-ampere-blue/20 blur-[110px] animate-pulse"></div>
+        <div class="relative border border-ampere-blue/30 overflow-hidden shadow-2xl rounded-2xl soft-hover">
+          <div class="absolute top-0 left-0 w-full h-1 bg-ampere-blue animate-scan z-20"></div>
+          <img src="gigi.png" alt="Gibril Zaoui" class="w-full h-[600px] object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-expertise" class="tab-content hidden-tab animate-ascend">
+    <div class="grid lg:grid-cols-2 gap-16">
+      <div>
+        <h3 class="text-4xl font-title font-bold mb-10 flex items-center gap-4">
+          <div class="w-3 h-3 bg-ampere-blue rotate-45"></div>
+          <span data-i18n="skillsTitle">Matrice technique</span>
+        </h3>
+        <div class="grid grid-cols-2 gap-6">
+          <div class="panel p-6 border-l-2 border-ampere-blue soft-hover">
+            <h4 class="font-bold text-ampere-blue mb-4 uppercase text-xs tracking-widest" data-i18n="backendTitle">Backend</h4>
+            <p class="text-sm text-ampere-scandium2" data-i18n="backendText">Java (JEE, Spring Boot, POO, JDBC), PHP (Laravel, Symfony, PDO), Python, API RESTful, architecture MVC, authentification JWT.</p>
+          </div>
+          <div class="panel p-6 border-l-2 border-ampere-blue soft-hover">
+            <h4 class="font-bold text-ampere-blue mb-4 uppercase text-xs tracking-widest" data-i18n="dataTitle">Données</h4>
+            <p class="text-sm text-ampere-scandium2" data-i18n="dataText">SQL (jointures INNER/LEFT, indexation, transactions, EXPLAIN), MySQL, PostgreSQL, optimisation de requêtes (5s → 300ms).</p>
+          </div>
+          <div class="panel p-6 border-l-2 border-ampere-blue soft-hover">
+            <h4 class="font-bold text-ampere-blue mb-4 uppercase text-xs tracking-widest" data-i18n="frontendTitle">Frontend</h4>
+            <p class="text-sm text-ampere-scandium2" data-i18n="frontendText">React (Hooks useState/useEffect, composants, state management), JavaScript/TS, HTML5/CSS3, Tailwind CSS.</p>
+          </div>
+          <div class="panel p-6 border-l-2 border-ampere-blue soft-hover">
+            <h4 class="font-bold text-ampere-blue mb-4 uppercase text-xs tracking-widest" data-i18n="devopsTitle">DevOps et systèmes</h4>
+            <p class="text-sm text-ampere-scandium2" data-i18n="devopsText">Docker (Dockerfile, Docker Compose, multi-stage), Podman, GitLab CI/CD, Linux, Bash Scripting, Git Flow.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-4xl font-title font-bold mb-10 flex items-center gap-4">
+          <div class="w-3 h-3 bg-ampere-blue rotate-45"></div>
+          <span data-i18n="expTitle">Expérience</span>
+        </h3>
+        <div class="space-y-8">
+          <div class="relative pl-8 border-l border-white/10 group">
+            <div class="absolute -left-[5px] top-1 w-2 h-2 bg-ampere-blue rotate-45 timeline-dot"></div>
+            <span class="text-[10px] font-mono text-ampere-blue tracking-tighter">Oct 2025 - Sept 2026</span>
+            <h4 class="text-xl font-bold uppercase mt-1" data-i18n="exp1Title">Développeur backend et web en alternance</h4>
+            <p class="text-ampere-scandium1 font-bold text-xs">CERTIGNA // VILLENEUVE-D'ASCQ</p>
+            <p class="text-ampere-scandium2 text-sm mt-2" data-i18n="exp1Text">Développement d'applications métiers en Java/PHP, conception d'algorithmes de traitement de données complexes, maintenance évolutive en méthode Agile. Optimisation de requêtes SQL et refonte de modules API critiques.</p>
+          </div>
+          <div class="relative pl-8 border-l border-white/10 group">
+            <div class="absolute -left-[5px] top-1 w-2 h-2 bg-ampere-blue rotate-45 timeline-dot"></div>
+            <span class="text-[10px] font-mono text-ampere-blue tracking-tighter">2022 - 2026</span>
+            <h4 class="text-xl font-bold uppercase mt-1" data-i18n="exp2Title">BUT Informatique</h4>
+            <p class="text-ampere-scandium1 font-bold text-xs">IUT DE LENS</p>
+            <p class="text-ampere-scandium2 text-sm mt-2" data-i18n="exp2Text">Architecture réseau, virtualisation (Docker/Podman), programmation orientée objet, gestion de projets complexes, bases de données relationnelles, développement web fullstack.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-projets" class="tab-content hidden-tab animate-ascend">
+    <h3 class="text-4xl font-title font-bold mb-16 uppercase tracking-tight flex items-center gap-4">
+      <div class="w-3 h-3 bg-ampere-blue rotate-45"></div>
+      <span data-i18n="projectsTitle">Déploiements et réalisations</span>
+    </h3>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+      <div class="panel hover:border-ampere-blue/50 transition-all group project-card soft-hover">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=200&fit=crop" alt="Certigna API">
+        <div class="p-10">
+          <div class="flex justify-between items-start mb-6">
+            <span class="text-[10px] font-mono bg-ampere-blue/10 text-ampere-blue px-3 py-1 rounded" data-i18n="certignaTag">CERTIGNA // PRODUCTION</span>
+            <i data-lucide="server" class="w-4 h-4 text-ampere-scandium2"></i>
+          </div>
+          <h4 class="text-2xl font-bold mb-4 uppercase" data-i18n="certignaTitle">Optimisation du module API</h4>
+          <p class="text-ampere-scandium2 text-sm leading-relaxed mb-6" data-i18n="certignaText">Refonte complète d'un algorithme critique pour l'analyse de données métier. Réduction des temps de réponse de 5 secondes à 300ms via indexation SQL et réécriture de requêtes complexes.</p>
+          <div class="flex gap-3 flex-wrap">
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">JAVA</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">SQL</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">API REST</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">GIT</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel hover:border-ampere-blue/50 transition-all group project-card project-link soft-hover">
+        <img src="https://image.over-blog.com/SGkcst74C01dL9Ib4J94IahqIQU=/filters:no_upscale()/image%2F0651923%2F20240910%2Fob_f89f97_bubble-waffle.jpg" alt="Bubble Waffel">
+        <div class="p-10">
+          <div class="flex justify-between items-start mb-6">
+            <span class="text-[10px] font-mono bg-ampere-blue/10 text-ampere-blue px-3 py-1 rounded" data-i18n="bubbleTag">CLIENT // FULLSTACK</span>
+            <a href="https://www.bubble-waffel.fr/" target="_blank" class="text-ampere-blue hover:text-white"><i data-lucide="external-link" class="w-4 h-4"></i></a>
+          </div>
+          <h4 class="text-2xl font-bold mb-4 uppercase" data-i18n="bubbleTitle">Bubble Waffel - site client</h4>
+          <p class="text-ampere-scandium2 text-sm leading-relaxed mb-6" data-i18n="bubbleText">Site web réalisé pour un client local. Développement complet de A à Z : conception, backend, frontend, mise en ligne. Gestion du catalogue, formulaire de commande et espace administration.</p>
+          <div class="flex gap-3 flex-wrap">
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">PHP</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">MYSQL</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">HTML/CSS</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">JS</span>
+          </div>
+          <a href="https://www.bubble-waffel.fr/" target="_blank" class="inline-block mt-4 text-ampere-blue text-xs font-bold uppercase hover:underline" data-i18n="visitSite">Visiter le site →</a>
+        </div>
+      </div>
+
+      <div class="panel hover:border-ampere-blue/50 transition-all group project-card soft-hover">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=200&fit=crop" alt="Vlog Laravel">
+        <div class="p-10">
+          <div class="flex justify-between items-start mb-6">
+            <span class="text-[10px] font-mono bg-ampere-blue/10 text-ampere-blue px-3 py-1 rounded" data-i18n="vlogTag">PERSONNEL // BACKEND</span>
+            <i data-lucide="video" class="w-4 h-4 text-ampere-scandium2"></i>
+          </div>
+          <h4 class="text-2xl font-bold mb-4 uppercase" data-i18n="vlogTitle">Vlog recettes en Laravel</h4>
+          <p class="text-ampere-scandium2 text-sm leading-relaxed mb-6" data-i18n="vlogText">Projet personnel en Laravel pour gérer un vlog de recettes. Authentification utilisateurs, CRUD recettes, gestion des catégories, upload d'images. Architecture MVC propre avec migrations et relations.</p>
+          <div class="flex gap-3 flex-wrap">
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">LARAVEL</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">PHP</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">MYSQL</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">AUTH</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel hover:border-ampere-blue/50 transition-all group project-card soft-hover">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=200&fit=crop" alt="Marathon du web">
+        <div class="p-10">
+          <div class="flex justify-between items-start mb-6">
+            <span class="text-[10px] font-mono bg-ampere-blue/10 text-ampere-blue px-3 py-1 rounded" data-i18n="marathonTag">BUT // COLLABORATION MMI</span>
+            <i data-lucide="calendar" class="w-4 h-4 text-ampere-scandium2"></i>
+          </div>
+          <h4 class="text-2xl font-bold mb-4 uppercase" data-i18n="marathonTitle">Marathon du web - Réservation vacances</h4>
+          <p class="text-ampere-scandium2 text-sm leading-relaxed mb-6" data-i18n="marathonText">Deux journées intensives avec des étudiants MMI : eux sur le design, nous sur l'intégration et le développement. Création d'un site de réservation de vacances avec calendrier, recherche de séjours, panier et paiement. Travail en équipe, communication et respect des deadlines.</p>
+          <div class="flex gap-3 flex-wrap">
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">HTML/CSS</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">JS</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">TEAMWORK</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">AGILE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel hover:border-ampere-blue/50 transition-all group project-card soft-hover">
+        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&h=200&fit=crop" alt="Location voiture">
+        <div class="p-10">
+          <div class="flex justify-between items-start mb-6">
+            <span class="text-[10px] font-mono bg-ampere-blue/10 text-ampere-blue px-3 py-1 rounded" data-i18n="carTag">FULLSTACK // DEVOPS</span>
+            <i data-lucide="car" class="w-4 h-4 text-ampere-scandium2"></i>
+          </div>
+          <h4 class="text-2xl font-bold mb-4 uppercase" data-i18n="carTitle">Plateforme location voiture - React et Docker</h4>
+          <p class="text-ampere-scandium2 text-sm leading-relaxed mb-6" data-i18n="carText">Application fullstack de location de voiture en React avec backend API. Conteneurisation complète avec Docker et Docker Compose. Recherche de véhicules, réservation, gestion des disponibilités, espace client.</p>
+          <div class="flex gap-3 flex-wrap">
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">REACT</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">DOCKER</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">API REST</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">COMPOSE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel hover:border-ampere-blue/50 transition-all group project-card soft-hover">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&h=200&fit=crop" alt="Pizzeria">
+        <div class="p-10">
+          <div class="flex justify-between items-start mb-6">
+            <span class="text-[10px] font-mono bg-ampere-blue/10 text-ampere-blue px-3 py-1 rounded" data-i18n="pizzaTag">BUT // E-COMMERCE</span>
+            <i data-lucide="shopping-cart" class="w-4 h-4 text-ampere-scandium2"></i>
+          </div>
+          <h4 class="text-2xl font-bold mb-4 uppercase" data-i18n="pizzaTitle">Système e-commerce pizzeria</h4>
+          <p class="text-ampere-scandium2 text-sm leading-relaxed mb-6" data-i18n="pizzaText">Architecture complète d'un système de commande en ligne : modélisation de base de données, backend PHP, frontend React. Panier, gestion de commandes, espace administration. Digitalisation complète de la prise de commande.</p>
+          <div class="flex gap-3 flex-wrap">
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">PHP</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">REACT</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">MYSQL</span>
+            <span class="text-[10px] font-bold border border-white/10 px-2 py-1 rounded">MCD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel bg-ampere-blue/10 p-10 border border-ampere-blue/30 hover:border-ampere-blue/70 transition-all group soft-hover">
+        <div class="flex justify-between items-start mb-6">
+          <span class="text-[10px] font-mono bg-ampere-blue/20 text-ampere-blue px-3 py-1 rounded" data-i18n="portraitTag">PORTRAIT</span>
+          <i data-lucide="award" class="w-4 h-4 text-ampere-blue"></i>
+        </div>
+        <h4 class="text-2xl font-bold mb-4 uppercase" data-i18n="whyMeTitle">Pourquoi moi ?</h4>
+        <ul class="text-ampere-scandium2 text-sm leading-relaxed mb-6 space-y-2">
+          <li data-i18n="why1">✓ <span class="text-ampere-blue font-bold">Alternance chez Certigna</span> = opérationnel rapidement en Java/PHP</li>
+          <li data-i18n="why2">✓ <span class="text-ampere-blue font-bold">Stack technique solide</span> : SQL complexe, React, Docker, CI/CD</li>
+          <li data-i18n="why3">✓ <span class="text-ampere-blue font-bold">Sportif de haut niveau</span> = rigueur, discipline, gestion de pression</li>
+          <li data-i18n="why4">✓ <span class="text-ampere-blue font-bold">Apprentissage rapide</span> = je monte vite en compétences</li>
+          <li data-i18n="why5">✓ <span class="text-ampere-blue font-bold">Appétence pour l'industrie</span> = je veux travailler sur des applications avec impact réel</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-engagement" class="tab-content hidden-tab animate-ascend">
+    <h3 class="text-4xl font-title font-bold mb-16 uppercase tracking-tight flex items-center gap-4">
+      <div class="w-3 h-3 bg-ampere-blue rotate-45"></div>
+      <span data-i18n="engagementTitle">Équilibre et engagement</span>
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div onclick="openModal('modal-polo')" class="cursor-pointer group relative overflow-hidden h-80 border border-white/10 rounded-2xl soft-hover">
+        <img src="polo.jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+        <div class="absolute inset-0 bg-ampere-eigengrau/60 flex flex-col justify-end p-6">
+          <h4 class="text-xl font-bold uppercase tracking-widest text-ampere-blue" data-i18n="poloTitle">Water-polo</h4>
+          <p class="text-xs font-bold uppercase text-white/70" data-i18n="poloSub">Mouscron // Haut niveau</p>
+        </div>
+      </div>
+
+      <div onclick="openModal('modal-fresque')" class="cursor-pointer group relative overflow-hidden h-80 border border-white/10 rounded-2xl soft-hover">
+        <img src="https://www.lannonciation.com/wp-content/uploads/2022/03/20220311_172317.jpg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+        <div class="absolute inset-0 bg-ampere-eigengrau/60 flex flex-col justify-end p-6">
+          <h4 class="text-xl font-bold uppercase tracking-widest text-ampere-blue" data-i18n="climateTitle">Fresque du climat</h4>
+          <p class="text-xs font-bold uppercase text-white/70" data-i18n="climateSub">Sensibilisation // Engagement</p>
+        </div>
+      </div>
+
+      <div onclick="openModal('modal-clarinette')" class="cursor-pointer group relative overflow-hidden h-80 border border-white/10 rounded-2xl soft-hover">
+        <img src="https://images.unsplash.com/photo-1573871666457-7c7329118cf9?w=600&h=600&fit=crop" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+        <div class="absolute inset-0 bg-ampere-eigengrau/60 flex flex-col justify-end p-6">
+          <h4 class="text-xl font-bold uppercase tracking-widest text-ampere-blue" data-i18n="musicTitle">Musique</h4>
+          <p class="text-xs font-bold uppercase text-white/70" data-i18n="musicSub">Clarinette // Précision</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-contact" class="tab-content hidden-tab animate-ascend">
+    <h3 class="text-4xl font-title font-bold mb-10 uppercase tracking-tight flex items-center gap-4">
+      <div class="w-3 h-3 bg-ampere-blue rotate-45"></div>
+      <span data-i18n="contactTitle">Contact</span>
+    </h3>
+
+    <div class="panel p-10 max-w-3xl soft-hover">
+      <p class="text-ampere-scandium2 text-lg mb-8" data-i18n="contactText">
+        Je suis actuellement disponible pour une alternance de 3 ans chez Renault Ampere. Contactez-moi pour discuter de votre équipe, de vos projets et de la manière dont je peux apporter une vraie valeur.
+      </p>
+
+      <div class="space-y-6">
+        <a href="mailto:gibrilzaoui9@gmail.com" class="flex items-center gap-4 text-ampere-scandium2 hover:text-ampere-blue transition-all">
+          <i data-lucide="mail" class="w-5 h-5"></i>
+          <span class="text-lg">gibrilzaoui9@gmail.com</span>
+        </a>
+        <a href="https://github.com/Gibril05" target="_blank" class="flex items-center gap-4 text-ampere-scandium2 hover:text-ampere-blue transition-all">
+          <i data-lucide="github" class="w-5 h-5"></i>
+          <span class="text-lg">github.com/Gibril05</span>
+        </a>
+        <a href="https://www.linkedin.com/in/gibril-zaoui" target="_blank" class="flex items-center gap-4 text-ampere-scandium2 hover:text-ampere-blue transition-all">
+          <i data-lucide="linkedin" class="w-5 h-5"></i>
+          <span class="text-lg">linkedin.com/in/gibril-zaoui</span>
+        </a>
+      </div>
+
+      <div class="mt-10 pt-10 border-t border-white/10">
+        <p class="text-ampere-scandium2 text-sm" data-i18n="contactFooter">Basé à Lille, Hauts-de-France. Disponible pour alternance à Villeneuve-d'Ascq ou sur site.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="fixed bottom-0 w-full glass border-t border-white/5 py-4 px-6 z-[60]">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-[10px] font-mono tracking-widest text-ampere-scandium2">
+    <div class="flex gap-6 uppercase">
+      <a href="https://github.com/Gibril05" target="_blank" class="hover:text-ampere-blue">GITHUB</a>
+      <a href="https://www.linkedin.com/in/gibril-zaoui" target="_blank" class="hover:text-ampere-blue">LINKEDIN</a>
+      <a href="mailto:gibrilzaoui9@gmail.com" class="hover:text-ampere-blue">EMAIL</a>
+    </div>
+    <div class="mt-2 md:mt-0 opacity-50 flex items-center gap-2">
+      <div class="w-1 h-1 bg-ampere-blue rounded-full animate-pulse"></div>
+      GIBRIL ZAOUI © 2026 // <span data-i18n="footerStatus">En attente de connexion</span>
+    </div>
+  </div>
+</footer>
+
+<div id="cv-modal" class="fixed inset-0 bg-ampere-eigengrau/95 backdrop-blur-xl z-[100] hidden flex items-center justify-center p-6">
+  <div class="relative w-full max-w-4xl h-[85vh] overflow-y-auto modal-shell rounded-2xl">
+    <button onclick="closeModal('cv-modal')" class="absolute top-4 right-4 text-ampere-blue hover:text-white p-2 z-50"><i data-lucide="x"></i></button>
+    <img id="cv-image" src="cv.png" class="w-full h-auto" alt="CV">
+  </div>
+</div>
+
+<div id="modal-polo" class="fixed inset-0 bg-ampere-eigengrau/95 backdrop-blur-xl z-[100] hidden flex items-center justify-center p-6">
+  <div class="max-w-2xl modal-shell p-10 relative rounded-2xl">
+    <button onclick="closeModal('modal-polo')" class="absolute top-4 right-4 text-ampere-blue"><i data-lucide="x"></i></button>
+    <h4 class="text-3xl font-title font-extrabold mb-6 text-ampere-blue uppercase tracking-tighter" data-i18n="poloModalTitle">Water-polo : rigueur et résilience</h4>
+    <p class="text-ampere-scandium2 leading-relaxed text-lg" data-i18n="poloModalText">Jouer au haut niveau à Mouscron m'a appris la discipline de fer, la gestion du stress intense et la force du collectif. En informatique comme dans le bassin, l'endurance fait la différence.</p>
+  </div>
+</div>
+
+<div id="modal-fresque" class="fixed inset-0 bg-ampere-eigengrau/95 backdrop-blur-xl z-[100] hidden flex items-center justify-center p-6">
+  <div class="max-w-2xl modal-shell p-10 relative rounded-2xl">
+    <button onclick="closeModal('modal-fresque')" class="absolute top-4 right-4 text-ampere-blue"><i data-lucide="x"></i></button>
+    <h4 class="text-3xl font-title font-extrabold mb-6 text-ampere-blue uppercase tracking-tighter" data-i18n="climateModalTitle">Engagement climatique</h4>
+    <p class="text-ampere-scandium2 leading-relaxed text-lg" data-i18n="climateModalText">Mon implication dans la Fresque du Climat reflète ma volonté d'agir pour un futur durable.</p>
+  </div>
+</div>
+
+<div id="modal-clarinette" class="fixed inset-0 bg-ampere-eigengrau/95 backdrop-blur-xl z-[100] hidden flex items-center justify-center p-6">
+  <div class="max-w-2xl modal-shell p-10 relative rounded-2xl">
+    <button onclick="closeModal('modal-clarinette')" class="absolute top-4 right-4 text-ampere-blue"><i data-lucide="x"></i></button>
+    <h4 class="text-3xl font-title font-extrabold mb-6 text-ampere-blue uppercase tracking-tighter" data-i18n="musicModalTitle">Musique : la précision du souffle</h4>
+    <p class="text-ampere-scandium2 leading-relaxed text-lg" data-i18n="musicModalText">La clarinette demande une concentration extrême et une lecture rigoureuse des structures complexes.</p>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  let currentLang = 'fr';
+
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden-tab'));
+    document.getElementById(tabId).classList.remove('hidden-tab');
+    document.querySelectorAll('.nav-link').forEach(lnk => lnk.classList.remove('active'));
+    const map = {
+      'tab-accueil': 'lnk-accueil',
+      'tab-expertise': 'lnk-expertise',
+      'tab-projets': 'lnk-projets',
+      'tab-engagement': 'lnk-engagement'
+    };
+    document.getElementById(map[tabId]).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+  function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+  function openCv() {
+    const cvMap = {
+      fr: 'cv.png',
+      en: 'cvengl.png',
+      es: 'cvesp.png'
+    };
+    document.getElementById('cv-image').src = cvMap[currentLang] || 'cv.png';
+    openModal('cv-modal');
+  }
+
+  const translations = {
+    fr: {
+      navAccueil: "Accueil",
+      navExpertise: "Compétences",
+      navProjets: "Projets",
+      navEngagement: "Engagement",
+      cvBtn: "CV",
+      heroStatus: "Système en ligne // Alternance 3 ans",
+      heroTitle: "Ingénierie logicielle // SDV",
+      heroHook: "Basé à Lille. Étudiant en BUT Informatique et alternant chez Certigna. Passionné par l'innovation logicielle industrielle et le Software-Defined Vehicle.",
+      heroDesc: "Je conçois des applications backend robustes en Java et PHP, j'optimise des requêtes SQL complexes et je développe des interfaces React. Je cherche à appliquer cette rigueur chez Renault Ampere pour contribuer à l'usine connectée et aux véhicules électriques intelligents.",
+      seeProjectsBtn: "Voir mes projets",
+      githubBtn: "GitHub",
+      skillsTitle: "Matrice technique",
+      backendTitle: "Backend",
+      backendText: "Java (JEE, Spring Boot, POO, JDBC), PHP (Laravel, Symfony, PDO), Python, API RESTful, architecture MVC, authentification JWT.",
+      dataTitle: "Données",
+      dataText: "SQL (jointures INNER/LEFT, indexation, transactions, EXPLAIN), MySQL, PostgreSQL, optimisation de requêtes (5s → 300ms).",
+      frontendTitle: "Frontend",
+      frontendText: "React (Hooks useState/useEffect, composants, state management), JavaScript/TS, HTML5/CSS3, Tailwind CSS.",
+      devopsTitle: "DevOps et systèmes",
+      devopsText: "Docker (Dockerfile, Docker Compose, multi-stage), Podman, GitLab CI/CD, Linux, Bash Scripting, Git Flow.",
+      expTitle: "Expérience",
+      exp1Title: "Développeur backend et web en alternance",
+      exp1Text: "Développement d'applications métiers en Java/PHP, conception d'algorithmes de traitement de données complexes, maintenance évolutive en méthode Agile. Optimisation de requêtes SQL et refonte de modules API critiques.",
+      exp2Title: "BUT Informatique",
+      exp2Text: "Architecture réseau, virtualisation (Docker/Podman), programmation orientée objet, gestion de projets complexes, bases de données relationnelles, développement web fullstack.",
+      projectsTitle: "Déploiements et réalisations",
+      certignaTag: "CERTIGNA // PRODUCTION",
+      certignaTitle: "Optimisation du module API",
+      certignaText: "Refonte complète d'un algorithme critique pour l'analyse de données métier. Réduction des temps de réponse de 5 secondes à 300ms via indexation SQL et réécriture de requêtes complexes.",
+      bubbleTag: "CLIENT // FULLSTACK",
+      bubbleTitle: "Bubble Waffel - site client",
+      bubbleText: "Site web réalisé pour un client local. Développement complet de A à Z : conception, backend, frontend, mise en ligne. Gestion du catalogue, formulaire de commande et espace administration.",
+      visitSite: "Visiter le site →",
+      vlogTag: "PERSONNEL // BACKEND",
+      vlogTitle: "Vlog recettes en Laravel",
+      vlogText: "Projet personnel en Laravel pour gérer un vlog de recettes. Authentification utilisateurs, CRUD recettes, gestion des catégories, upload d'images. Architecture MVC propre avec migrations et relations.",
+      marathonTag: "BUT // COLLABORATION MMI",
+      marathonTitle: "Marathon du web - Réservation vacances",
+      marathonText: "Deux journées intensives avec des étudiants MMI : eux sur le design, nous sur l'intégration et le développement. Création d'un site de réservation de vacances avec calendrier, recherche de séjours, panier et paiement. Travail en équipe, communication et respect des deadlines.",
+      carTag: "FULLSTACK // DEVOPS",
+      carTitle: "Plateforme location voiture - React et Docker",
+      carText: "Application fullstack de location de voiture en React avec backend API. Conteneurisation complète avec Docker et Docker Compose. Recherche de véhicules, réservation, gestion des disponibilités, espace client.",
+      pizzaTag: "BUT // E-COMMERCE",
+      pizzaTitle: "Système e-commerce pizzeria",
+      pizzaText: "Architecture complète d'un système de commande en ligne : modélisation de base de données, backend PHP, frontend React. Panier, gestion de commandes, espace administration. Digitalisation complète de la prise de commande.",
+      portraitTag: "PORTRAIT",
+      whyMeTitle: "Pourquoi moi ?",
+      why1: "✓ <span class='text-ampere-blue font-bold'>Alternance chez Certigna</span> = opérationnel rapidement en Java/PHP",
+      why2: "✓ <span class='text-ampere-blue font-bold'>Stack technique solide</span> : SQL complexe, React, Docker, CI/CD",
+      why3: "✓ <span class='text-ampere-blue font-bold'>Sportif de haut niveau</span> = rigueur, discipline, gestion de pression",
+      why4: "✓ <span class='text-ampere-blue font-bold'>Apprentissage rapide</span> = je monte vite en compétences",
+      why5: "✓ <span class='text-ampere-blue font-bold'>Appétence pour l'industrie</span> = je veux travailler sur des applications avec impact réel",
+      engagementTitle: "Équilibre et engagement",
+      poloTitle: "Water-polo",
+      poloSub: "Mouscron // Haut niveau",
+      climateTitle: "Fresque du climat",
+      climateSub: "Sensibilisation // Engagement",
+      musicTitle: "Musique",
+      musicSub: "Clarinette // Précision",
+      contactTitle: "Contact",
+      contactText: "Je suis actuellement disponible pour une alternance de 3 ans chez Renault Ampere. Contactez-moi pour discuter de votre équipe, de vos projets et de la manière dont je peux apporter une vraie valeur.",
+      contactFooter: "Basé à Lille, Hauts-de-France. Disponible pour alternance à Villeneuve-d'Ascq ou sur site.",
+      footerStatus: "En attente de connexion",
+      poloModalTitle: "Water-polo : rigueur et résilience",
+      poloModalText: "Jouer au haut niveau à Mouscron m'a appris la discipline de fer, la gestion du stress intense et la force du collectif. En informatique comme dans le bassin, l'endurance fait la différence.",
+      climateModalTitle: "Engagement climatique",
+      climateModalText: "Mon implication dans la Fresque du Climat reflète ma volonté d'agir pour un futur durable.",
+      musicModalTitle: "Musique : la précision du souffle",
+      musicModalText: "La clarinette demande une concentration extrême et une lecture rigoureuse des structures complexes."
+    },
+    en: {
+      navAccueil: "Home",
+      navExpertise: "Skills",
+      navProjets: "Projects",
+      navEngagement: "Commitment",
+      cvBtn: "CV",
+      heroStatus: "System online // 3-year apprenticeship",
+      heroTitle: "Software engineering // SDV",
+      heroHook: "Based in Lille. Computer Science student and Certigna apprentice. Passionate about industrial software innovation and the Software-Defined Vehicle.",
+      heroDesc: "I design robust backend applications in Java and PHP, optimize complex SQL queries, and build React interfaces. I want to bring this rigor to Renault Ampere to support the connected factory and intelligent electric vehicles.",
+      seeProjectsBtn: "See my projects",
+      githubBtn: "GitHub",
+      skillsTitle: "Technical matrix",
+      backendTitle: "Backend",
+      backendText: "Java (JEE, Spring Boot, OOP, JDBC), PHP (Laravel, Symfony, PDO), Python, REST APIs, MVC architecture, JWT authentication.",
+      dataTitle: "Data",
+      dataText: "SQL (INNER/LEFT joins, indexing, transactions, EXPLAIN), MySQL, PostgreSQL, query optimization (5s → 300ms).",
+      frontendTitle: "Frontend",
+      frontendText: "React (useState/useEffect hooks, components, state management), JavaScript/TS, HTML5/CSS3, Tailwind CSS.",
+      devopsTitle: "DevOps and systems",
+      devopsText: "Docker (Dockerfile, Docker Compose, multi-stage), Podman, GitLab CI/CD, Linux, Bash scripting, Git Flow.",
+      expTitle: "Experience",
+      exp1Title: "Backend and web developer apprentice",
+      exp1Text: "Development of business applications in Java/PHP, design of complex data-processing algorithms, iterative maintenance using Agile methods. SQL query optimization and critical API module refactoring.",
+      exp2Title: "Computer Science degree",
+      exp2Text: "Network architecture, virtualization (Docker/Podman), object-oriented programming, complex project management, relational databases, full-stack web development.",
+      projectsTitle: "Deployments and achievements",
+      certignaTag: "CERTIGNA // PRODUCTION",
+      certignaTitle: "API module optimization",
+      certignaText: "Complete redesign of a critical algorithm for business data analysis. Response times reduced from 5 seconds to 300ms through SQL indexing and complex query rewriting.",
+      bubbleTag: "CLIENT // FULLSTACK",
+      bubbleTitle: "Bubble Waffel - client website",
+      bubbleText: "Website built for a local client. End-to-end development: design, backend, frontend, deployment. Catalog management, order form, and admin area.",
+      visitSite: "Visit site →",
+      vlogTag: "PERSONAL // BACKEND",
+      vlogTitle: "Recipe vlog in Laravel",
+      vlogText: "Personal Laravel project to manage a recipe vlog. User authentication, recipe CRUD, category management, image upload. Clean MVC architecture with migrations and relationships.",
+      marathonTag: "DEGREE // MMI COLLABORATION",
+      marathonTitle: "Web marathon - vacation booking",
+      marathonText: "Two intensive days with MMI students: they handled the design, we handled integration and development. Built a vacation booking website with calendar, trip search, cart and payment. Teamwork, communication and deadlines under real conditions.",
+      carTag: "FULLSTACK // DEVOPS",
+      carTitle: "Car rental platform - React and Docker",
+      carText: "Full-stack car rental app in React with API backend. Fully containerized with Docker and Docker Compose. Vehicle search, booking, availability management, client area.",
+      pizzaTag: "DEGREE // E-COMMERCE",
+      pizzaTitle: "Pizzeria e-commerce system",
+      pizzaText: "Complete online ordering system: database modeling, PHP backend, React frontend. Cart, order management, admin area. Fully digitized ordering flow.",
+      portraitTag: "PROFILE",
+      whyMeTitle: "Why me?",
+      why1: "✓ <span class='text-ampere-blue font-bold'>Certigna apprenticeship</span> = quickly operational in Java/PHP",
+      why2: "✓ <span class='text-ampere-blue font-bold'>Strong technical stack</span>: complex SQL, React, Docker, CI/CD",
+      why3: "✓ <span class='text-ampere-blue font-bold'>High-level athlete</span> = rigor, discipline, pressure management",
+      why4: "✓ <span class='text-ampere-blue font-bold'>Fast learner</span> = I ramp up quickly",
+      why5: "✓ <span class='text-ampere-blue font-bold'>Interest in industry</span> = I want to work on applications with real impact",
+      engagementTitle: "Balance and commitment",
+      poloTitle: "Water polo",
+      poloSub: "Mouscron // High level",
+      climateTitle: "Climate Fresk",
+      climateSub: "Awareness // Commitment",
+      musicTitle: "Music",
+      musicSub: "Clarinet // Precision",
+      contactTitle: "Contact",
+      contactText: "I am currently available for a 3-year apprenticeship at Renault Ampere. Contact me to discuss your team, projects, and how I can add real value.",
+      contactFooter: "Based in Lille, Hauts-de-France. Available for apprenticeship in Villeneuve-d'Ascq or on site.",
+      footerStatus: "Waiting for connection",
+      poloModalTitle: "Water polo: rigor and resilience",
+      poloModalText: "Playing at a high level in Mouscron taught me strong discipline, stress management, and teamwork. In computing as in the pool, endurance matters.",
+      climateModalTitle: "Climate commitment",
+      climateModalText: "My involvement in the Climate Fresk reflects my desire to act for a sustainable future.",
+      musicModalTitle: "Music: precision of breath",
+      musicModalText: "The clarinet requires extreme concentration and a rigorous reading of complex structures."
+    },
+    es: {
+      navAccueil: "Inicio",
+      navExpertise: "Habilidades",
+      navProjets: "Proyectos",
+      navEngagement: "Compromiso",
+      cvBtn: "CV",
+      heroStatus: "Sistema en línea // alternancia de 3 años",
+      heroTitle: "Ingeniería de software // SDV",
+      heroHook: "Con base en Lille. Estudiante de informática y aprendiz en Certigna. Apasionado por la innovación de software industrial y el Software-Defined Vehicle.",
+      heroDesc: "Diseño aplicaciones backend robustas en Java y PHP, optimizo consultas SQL complejas y construyo interfaces React. Quiero aportar esta rigurosidad a Renault Ampere para apoyar la fábrica conectada y los vehículos eléctricos inteligentes.",
+      seeProjectsBtn: "Ver mis proyectos",
+      githubBtn: "GitHub",
+      skillsTitle: "Matriz técnica",
+      backendTitle: "Backend",
+      backendText: "Java (JEE, Spring Boot, POO, JDBC), PHP (Laravel, Symfony, PDO), Python, APIs REST, arquitectura MVC, autenticación JWT.",
+      dataTitle: "Datos",
+      dataText: "SQL (JOIN INNER/LEFT, indexación, transacciones, EXPLAIN), MySQL, PostgreSQL, optimización de consultas (5s → 300ms).",
+      frontendTitle: "Frontend",
+      frontendText: "React (hooks useState/useEffect, componentes, gestión de estado), JavaScript/TS, HTML5/CSS3, Tailwind CSS.",
+      devopsTitle: "DevOps y sistemas",
+      devopsText: "Docker (Dockerfile, Docker Compose, multi-stage), Podman, GitLab CI/CD, Linux, Bash scripting, Git Flow.",
+      expTitle: "Experiencia",
+      exp1Title: "Desarrollador backend y web en alternancia",
+      exp1Text: "Desarrollo de aplicaciones de negocio en Java/PHP, diseño de algoritmos complejos de tratamiento de datos, mantenimiento iterativo con métodos Agile. Optimización de consultas SQL y refactorización de módulos API críticos.",
+      exp2Title: "Grado en informática",
+      exp2Text: "Arquitectura de redes, virtualización (Docker/Podman), programación orientada a objetos, gestión de proyectos complejos, bases de datos relacionales, desarrollo web full-stack.",
+      projectsTitle: "Despliegues y logros",
+      certignaTag: "CERTIGNA // PRODUCCIÓN",
+      certignaTitle: "Optimización del módulo API",
+      certignaText: "Rediseño completo de un algoritmo crítico para el análisis de datos de negocio. Tiempos de respuesta reducidos de 5 segundos a 300ms mediante indexación SQL y reescritura de consultas complejas.",
+      bubbleTag: "CLIENTE // FULLSTACK",
+      bubbleTitle: "Bubble Waffel - sitio cliente",
+      bubbleText: "Sitio web realizado para un cliente local. Desarrollo de extremo a extremo: diseño, backend, frontend y despliegue. Gestión de catálogo, formulario de pedido y panel de administración.",
+      visitSite: "Visitar sitio →",
+      vlogTag: "PERSONAL // BACKEND",
+      vlogTitle: "Vlog de recetas en Laravel",
+      vlogText: "Proyecto personal en Laravel para gestionar un vlog de recetas. Autenticación de usuarios, CRUD de recetas, gestión de categorías, carga de imágenes. Arquitectura MVC limpia con migraciones y relaciones.",
+      marathonTag: "CARRERA // COLABORACIÓN MMI",
+      marathonTitle: "Maratón web - reserva de vacaciones",
+      marathonText: "Dos días intensivos con estudiantes MMI: ellos se ocuparon del diseño, nosotros de la integración y el desarrollo. Creamos un sitio de reserva de vacaciones con calendario, búsqueda de estancias, carrito y pago. Trabajo en equipo, comunicación y plazos reales.",
+      carTag: "FULLSTACK // DEVOPS",
+      carTitle: "Plataforma de alquiler de coches - React y Docker",
+      carText: "Aplicación full-stack de alquiler de coches en React con backend API. Contenerización completa con Docker y Docker Compose. Búsqueda de vehículos, reservas, disponibilidad y área de cliente.",
+      pizzaTag: "CARRERA // E-COMMERCE",
+      pizzaTitle: "Sistema e-commerce para pizzería",
+      pizzaText: "Sistema completo de pedidos en línea: modelado de base de datos, backend PHP, frontend React. Carrito, gestión de pedidos y panel de administración. Flujo de pedidos totalmente digitalizado.",
+      portraitTag: "PERFIL",
+      whyMeTitle: "¿Por qué yo?",
+      why1: "✓ <span class='text-ampere-blue font-bold'>Alternancia en Certigna</span> = operativo rápidamente en Java/PHP",
+      why2: "✓ <span class='text-ampere-blue font-bold'>Stack técnico sólido</span>: SQL complejo, React, Docker, CI/CD",
+      why3: "✓ <span class='text-ampere-blue font-bold'>Deportista de alto nivel</span> = rigor, disciplina, gestión de presión",
+      why4: "✓ <span class='text-ampere-blue font-bold'>Aprendizaje rápido</span> = me adapto pronto",
+      why5: "✓ <span class='text-ampere-blue font-bold'>Interés por la industria</span> = quiero trabajar en aplicaciones con impacto real",
+      engagementTitle: "Equilibrio y compromiso",
+      poloTitle: "Water polo",
+      poloSub: "Mouscron // Alto nivel",
+      climateTitle: "Fresca climática",
+      climateSub: "Sensibilización // Compromiso",
+      musicTitle: "Música",
+      musicSub: "Clarinete // Precisión",
+      contactTitle: "Contacto",
+      contactText: "Actualmente estoy disponible para una alternancia de 3 años en Renault Ampere. Contáctame para hablar de tu equipo, tus proyectos y del valor que puedo aportar.",
+      contactFooter: "Con base en Lille, Hauts-de-France. Disponible para alternancia en Villeneuve-d'Ascq o en sitio.",
+      footerStatus: "Esperando conexión",
+      poloModalTitle: "Water polo: rigor y resiliencia",
+      poloModalText: "Jugar a alto nivel en Mouscron me enseñó disciplina, gestión del estrés y trabajo en equipo. En informática, como en la piscina, la resistencia importa.",
+      climateModalTitle: "Compromiso climático",
+      climateModalText: "Mi participación en la Fresca Climática refleja mi deseo de actuar por un futuro sostenible.",
+      musicModalTitle: "Música: precisión de la respiración",
+      musicModalText: "El clarinete requiere concentración extrema y una lectura rigurosa de estructuras complejas."
+    }
+  };
+
+  function applyLang(lang) {
+    currentLang = lang;
+    const t = translations[lang] || translations.fr;
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key]) el.innerHTML = t[key];
+    });
+
+    document.getElementById('lang-select').value = lang;
+    lucide.createIcons();
+  }
+
+  function changeLang(lang) {
+    applyLang(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    applyLang('fr');
+  });
+</script>
+</body>
+</html>
